@@ -118,6 +118,15 @@ __webpack_require__.r(__webpack_exports__);
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.registerBlockType)("ourblocktheme/banner", {
   title: "Banner",
+  supports: {
+    align: ["full"]
+  },
+  attributes: {
+    align: {
+      type: "string",
+      default: "full"
+    }
+  },
   edit: EditComponent,
   save: SaveComponent
 });
