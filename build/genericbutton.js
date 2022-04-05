@@ -169,6 +169,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.registerBlockType)("ourblocktheme/genericbutton", {
   title: "Banner Button",
   attributes: {
@@ -178,6 +179,9 @@ __webpack_require__.r(__webpack_exports__);
     size: {
       type: "string",
       default: "large"
+    },
+    linkObject: {
+      type: "object"
     }
   },
   edit: EditComponent,
@@ -185,13 +189,23 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 function EditComponent(props) {
+  const [isLinkPickerVisible, setIsLinkPickerVisible] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+
   const handleTextChange = x => {
     props.setAttributes({
       text: x
     });
   };
 
-  const buttonHandler = () => {};
+  const buttonHandler = () => {
+    setIsLinkPickerVisible(prev => !prev);
+  };
+
+  const handleLinkChange = newLink => {
+    props.setAttributes({
+      linkObject: newLink
+    });
+  };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.BlockControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToolbarGroup, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToolbarButton, {
     onClick: buttonHandler,
@@ -217,11 +231,25 @@ function EditComponent(props) {
     className: `btn btn--${props.attributes.size} btn--blue`,
     value: props.attributes.text,
     onChange: handleTextChange
-  }));
+  }), isLinkPickerVisible && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Popover, {
+    position: "middle center"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.__experimentalLinkControl, {
+    settings: [],
+    value: props.attributes.linkObject,
+    onChange: handleLinkChange
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "primary",
+    onClick: () => setIsLinkPickerVisible(false),
+    style: {
+      display: "block",
+      width: "100%"
+    }
+  }, "Confirm Link")));
 }
 
 function SaveComponent(props) {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: props.attributes.linkObject.url,
     className: `btn btn--${props.attributes.size} btn--blue`
   }, props.attributes.text);
 }

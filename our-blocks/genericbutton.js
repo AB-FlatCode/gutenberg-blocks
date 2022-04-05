@@ -1,24 +1,34 @@
 import { link } from "@wordpress/icons";
-import { ToolbarGroup, ToolbarButton } from "@wordpress/components";
-import { RichText, BlockControls } from "@wordpress/block-editor";
+import { ToolbarGroup, ToolbarButton, Popover, Button } from "@wordpress/components";
+import { RichText, BlockControls, __experimentalLinkControl as LinkControll } from "@wordpress/block-editor";
 import { registerBlockType } from "@wordpress/blocks";
+import { useState } from "@wordpress/element";
 
 registerBlockType("ourblocktheme/genericbutton", {
   title: "Banner Button",
   attributes: {
     text: { type: "string" },
-    size: { type: "string", default: "large" }
+    size: { type: "string", default: "large" },
+    linkObject: { type: "object" }
   },
   edit: EditComponent,
   save: SaveComponent
 });
 
 function EditComponent(props) {
+  const [isLinkPickerVisible, setIsLinkPickerVisible] = useState(false);
+
   const handleTextChange = x => {
     props.setAttributes({ text: x });
   };
 
-  const buttonHandler = () => {};
+  const buttonHandler = () => {
+    setIsLinkPickerVisible(prev => !prev);
+  };
+
+  const handleLinkChange = newLink => {
+    props.setAttributes({ linkObject: newLink });
+  };
   return (
     <>
       <BlockControls>
@@ -38,10 +48,22 @@ function EditComponent(props) {
         </ToolbarGroup>
       </BlockControls>
       <RichText allowedFormats={[]} tagName="a" className={`btn btn--${props.attributes.size} btn--blue`} value={props.attributes.text} onChange={handleTextChange} />
+      {isLinkPickerVisible && (
+        <Popover position="middle center">
+          <LinkControll settings={[]} value={props.attributes.linkObject} onChange={handleLinkChange} />
+          <Button variant="primary" onClick={() => setIsLinkPickerVisible(false)} style={{ display: "block", width: "100%" }}>
+            Confirm Link
+          </Button>
+        </Popover>
+      )}
     </>
   );
 }
 
 function SaveComponent(props) {
-  return <a className={`btn btn--${props.attributes.size} btn--blue`}>{props.attributes.text}</a>;
+  return (
+    <a href={props.attributes.linkObject.url} className={`btn btn--${props.attributes.size} btn--blue`}>
+      {props.attributes.text}
+    </a>
+  );
 }
