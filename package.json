@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wp-scripts start src/index.js our-blocks/banner.js our-blocks/genericheading.js",
+    "start": "wp-scripts start src/index.js our-blocks/banner.js our-blocks/genericheading.js our-blocks/genericbutton.js",
     "dev": "wp-scripts start",
     "devFast": "wp-scripts start",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@glidejs/glide": "^3.4.1",
+    "@wordpress/icons": "^8.1.0",
     "@wordpress/scripts": "*",
     "axios": "^0.21.1",
     "normalize.css": "^8.0.1"
