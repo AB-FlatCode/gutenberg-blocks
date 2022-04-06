@@ -482,6 +482,13 @@ li {
   opacity: 0;
 }
 
+.our-placeholder-block {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.65rem;
+  background: linear-gradient(180deg, #dedede, #adadad);
+}
+
 /* Customize Login Screen */
 body.login .button-primary {
   background-color: #F95738;
