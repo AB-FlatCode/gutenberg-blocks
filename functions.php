@@ -247,3 +247,5 @@ class JSXBlock
 new JSXBlock('banner', true, ['fallbackimage' => get_theme_file_uri('/images/library-hero.jpg')]); // render block component with php callback
 new JSXBlock('genericheading');
 new JSXBlock('genericbutton');
+new JSXBlock("slideshow", true);
+new JSXBlock("slide", true);
