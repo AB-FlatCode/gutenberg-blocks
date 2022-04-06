@@ -178,10 +178,11 @@ function makeNotePrivate($data, $postarr) {
 class JSXBlock 
 {
 
-  function __construct($name, $renderCallback = null)
+  function __construct($name, $renderCallback = null, $data = null)
   {
     $this->name = $name; //block name
     $this->renderCallback = $renderCallback; // block save component with php callback
+    $this->data = $data;
 
     add_action('init', [$this, 'onInit']); // block create
   }
@@ -203,9 +204,13 @@ class JSXBlock
       $ourArgs['render_callback'] = [$this, 'ourRenderCallback'];
     }
     register_block_type("ourblocktheme/{$this->name}", $ourArgs);
+
+    if($this->data) {
+      wp_localize_script($this->name, $this->name, $this->data);
+    }
   }
 }
 
-new JSXBlock('banner', true); // render block component with php callback
+new JSXBlock('banner', true, ['fallbackimage' => get_theme_file_uri('/images/library-hero.jpg')]); // render block component with php callback
 new JSXBlock('genericheading');
 new JSXBlock('genericbutton');

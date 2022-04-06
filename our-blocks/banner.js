@@ -12,7 +12,7 @@ registerBlockType("ourblocktheme/banner", {
   attributes: {
     align: { type: "string", default: "full" },
     imageID: { type: "number" },
-    imageURL: { type: "string" }
+    imageURL: { type: "string", default: banner.fallbackimage } // localized script
   },
   edit: EditComponent,
   save: SaveComponent
@@ -20,14 +20,16 @@ registerBlockType("ourblocktheme/banner", {
 
 function EditComponent(props) {
   useEffect(() => {
-    async function get() {
-      const reponse = await apiFetch({
-        path: `/wp/v2/media/${props.attributes.imageID}`,
-        method: "GET"
-      });
-      props.setAttributes({ imageURL: reponse.media_details.sizes.full.source_url });
+    if (props.attributes.imageID) {
+      async function get() {
+        const reponse = await apiFetch({
+          path: `/wp/v2/media/${props.attributes.imageID}`,
+          method: "GET"
+        });
+        props.setAttributes({ imageURL: reponse.media_details.sizes.full.source_url });
+      }
+      get();
     }
-    get();
   }, [props.attributes.imageID]);
 
   const onFileSelect = media => {

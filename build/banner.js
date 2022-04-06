@@ -157,8 +157,10 @@ __webpack_require__.r(__webpack_exports__);
       type: "number"
     },
     imageURL: {
-      type: "string"
-    }
+      type: "string",
+      default: banner.fallbackimage
+    } // localized script
+
   },
   edit: EditComponent,
   save: SaveComponent
@@ -166,17 +168,19 @@ __webpack_require__.r(__webpack_exports__);
 
 function EditComponent(props) {
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    async function get() {
-      const reponse = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
-        path: `/wp/v2/media/${props.attributes.imageID}`,
-        method: "GET"
-      });
-      props.setAttributes({
-        imageURL: reponse.media_details.sizes.full.source_url
-      });
-    }
+    if (props.attributes.imageID) {
+      async function get() {
+        const reponse = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
+          path: `/wp/v2/media/${props.attributes.imageID}`,
+          method: "GET"
+        });
+        props.setAttributes({
+          imageURL: reponse.media_details.sizes.full.source_url
+        });
+      }
 
-    get();
+      get();
+    }
   }, [props.attributes.imageID]);
 
   const onFileSelect = media => {
