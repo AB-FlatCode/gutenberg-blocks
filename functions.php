@@ -206,6 +206,9 @@ class PlaceholderBlock
 new PlaceholderBlock("eventsandblogs");
 new PlaceholderBlock("header");
 new PlaceholderBlock("footer");
+new PlaceholderBlock("singlepost");
+new PlaceholderBlock("singlepage");
+new PlaceholderBlock("blogindex");
 
 
 class JSXBlock 
@@ -249,3 +252,21 @@ new JSXBlock('genericheading');
 new JSXBlock('genericbutton');
 new JSXBlock("slideshow", true);
 new JSXBlock("slide", true);
+
+
+function myallowedblocks($allowed_block_types, $editor_context) {
+
+  // restrict blocks only on proffesor post type
+  /* if($editor_context->post->post_type == "proffesor") {
+    return array('core/paragraph', 'ourblocktheme/header');
+  } */
+  //if on page or post editor sreen
+ if(!empty($editor_context->post)) {
+   return $allowed_block_types;
+ }
+ //if on full site editor screen
+ return array('ourblocktheme/header', 'ourblocktheme/footer');
+
+}
+
+add_filter('allowed_block_types_all', 'myallowedblocks' , 10 , 2);
